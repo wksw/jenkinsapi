@@ -47,7 +47,6 @@ func (j *Jenkins) Do(path string) (*http.Response, error) {
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println("---", uri.String())
 	req, err := http.NewRequest(http.MethodPost, uri.String(), nil)
 	if err != nil {
 		return nil, nil

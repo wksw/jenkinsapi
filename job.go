@@ -14,8 +14,8 @@ type Job struct {
 }
 
 // get all jobs
-func (j *Job) GetAll() ([]*JenkinsProject, error) {
-	resp, err := j.Jenkins.Do("api/json")
+func (j *Jenkins) GetJobs() ([]*JenkinsProject, error) {
+	resp, err := j.Do("api/json")
 	if err != nil {
 		return []*JenkinsProject{}, err
 	}
@@ -32,8 +32,8 @@ func (j *Job) GetAll() ([]*JenkinsProject, error) {
 }
 
 // get job detail
-func (j *Job) Get(JobName string) (*JenkinsJob, error) {
-	resp, err := j.Jenkins.Do(fmt.Sprintf("job/%s/api/json", JobName))
+func (j *Jenkins) GetJob(JobName string) (*JenkinsJob, error) {
+	resp, err := j.Do(fmt.Sprintf("job/%s/api/json", JobName))
 	if err != nil {
 		return nil, err
 	}
@@ -50,8 +50,8 @@ func (j *Job) Get(JobName string) (*JenkinsJob, error) {
 }
 
 // trigger build
-func (j *Job) Build(jobName string) error {
-	resp, err := j.Jenkins.Do(fmt.Sprintf("job/%s/build?delay=0sec", jobName))
+func (j *Jenkins) Build(jobName string) error {
+	resp, err := j.Do(fmt.Sprintf("job/%s/build?delay=0sec", jobName))
 	if err != nil {
 		return err
 	}
@@ -69,12 +69,12 @@ func (j *Job) Build(jobName string) error {
 }
 
 // trigger bild with paramaters
-func (j *Job) BuildWithParamaters(jobName string, params map[string]interface{}) error {
+func (j *Jenkins) BuildWithParamaters(jobName string, params map[string]interface{}) error {
 	queryParams := ""
 	for key, value := range params {
 		queryParams += fmt.Sprintf("&%s=%v", key, value)
 	}
-	resp, err := j.Jenkins.Do(fmt.Sprintf("job/%s/buildWithParameters?%s", jobName, strings.Trim(queryParams, "&")))
+	resp, err := j.Do(fmt.Sprintf("job/%s/buildWithParameters?%s", jobName, strings.Trim(queryParams, "&")))
 	if err != nil {
 		return err
 	}
@@ -92,8 +92,8 @@ func (j *Job) BuildWithParamaters(jobName string, params map[string]interface{})
 }
 
 // get all jobs by view
-func (j *Job) GetAllByView(viewName string) ([]*JenkinsProject, error) {
-	resp, err := j.Jenkins.Do(fmt.Sprintf("view/%s/api/json", viewName))
+func (j *Jenkins) GetJobsByView(viewName string) ([]*JenkinsProject, error) {
+	resp, err := j.Do(fmt.Sprintf("view/%s/api/json", viewName))
 	if err != nil {
 		return nil, err
 	}
