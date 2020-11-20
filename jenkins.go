@@ -30,18 +30,6 @@ func New(endpoint, user, apiToken string) (*Jenkins, error) {
 	}, nil
 }
 
-func (j *Jenkins) Job() *Job {
-	return &Job{
-		Jenkins: j,
-	}
-}
-
-func (j *Jenkins) View() *View {
-	return &View{
-		Jenkins: j,
-	}
-}
-
 func (j *Jenkins) Do(path string) (*http.Response, error) {
 	uri, err := url.Parse(fmt.Sprintf("%s/%s", j.Endpoint, path))
 	if err != nil {
