@@ -6,15 +6,15 @@ import (
 )
 
 func (j *Jenkins) GetViews() ([]*JenkinsProject, error) {
-	resp, err := j.Do("api/json")
+	resp, err := j.Do("api/json", nil)
 	if err != nil {
 		return []*JenkinsProject{}, err
 	}
-	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return []*JenkinsProject{}, err
 	}
+	defer resp.Body.Close()
 	var jenkinsApi JenkinsApi
 	if err := json.Unmarshal(body, &jenkinsApi); err != nil {
 		return []*JenkinsProject{}, err

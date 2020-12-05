@@ -1,6 +1,7 @@
 package jenkinsapi
 
 import (
+	"bytes"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -30,12 +31,12 @@ func New(endpoint, user, apiToken string) (*Jenkins, error) {
 	}, nil
 }
 
-func (j *Jenkins) Do(path string) (*http.Response, error) {
+func (j *Jenkins) Do(path string, body []byte) (*http.Response, error) {
 	uri, err := url.Parse(fmt.Sprintf("%s/%s", j.Endpoint, path))
 	if err != nil {
 		return nil, err
 	}
-	req, err := http.NewRequest(http.MethodPost, uri.String(), nil)
+	req, err := http.NewRequest(http.MethodPost, uri.String(), bytes.NewBuffer(body))
 	if err != nil {
 		return nil, nil
 	}

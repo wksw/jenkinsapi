@@ -86,3 +86,17 @@ type JenkinsJobParamDefaultValue struct {
 	JenkinsModel
 	Value interface{} `json:"value"`
 }
+
+type GenericTriggeResp struct {
+	Jobs    map[string]*GenericTriggeJob `json:"jobs"`
+	Message string                       `json:"message"`
+}
+
+type GenericTriggeJob struct {
+	RegexpFilterExpression string            `json:"regexpFilterExpression"`
+	Triggered              bool              `json:"triggered"`
+	ResolvedVariables      map[string]string `json:"resolvedVariables"`
+	RegexpFilterText       string            `json:"regexpFilterText"`
+	Id                     int               `json:"id"`
+	Url                    string            `json:"url"`
+}
