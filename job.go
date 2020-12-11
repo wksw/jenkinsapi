@@ -127,3 +127,22 @@ func (j *Jenkins) GenericTrigge(token string, data []byte) (*GenericTriggeResp, 
 	}
 	return &genericTriggerResp, nil
 }
+
+// get job result
+func (j *Jenkins) GetJobResuilt(JobName string, BuildNumber int64) (*JobResuilt, error) {
+	path := fmt.Sprintf("job/%s/%d/api/json", JobName, BuildNumber)
+	resp, err := j.Do(path, nil)
+	if err != nil {
+		return &JobResuilt{}, err
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return &JobResuilt{}, err
+	}
+	defer resp.Body.Close()
+	var jobresuilt JobResuilt
+	if err := json.Unmarshal(body, &jobresuilt); err != nil {
+		return &JobResuilt{}, err
+	}
+	return &jobresuilt, nil
+}
