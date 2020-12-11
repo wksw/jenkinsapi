@@ -100,3 +100,32 @@ type GenericTriggeJob struct {
 	Id                     int               `json:"id"`
 	Url                    string            `json:"url"`
 }
+
+type JobResuilt struct {
+	JenkinsModel
+	Actions           []interface{} `json:"actions"`
+	Artifacts         []interface{} `json:"artifacts"`
+	Building          bool          `json:"building"`
+	Description       string        `json:"description"`
+	DisplayName       string        `json:"displayName"`
+	Duration          int64         `json:"duration"`
+	EstimatedDuration int64         `json:"estimatedDuration"`
+	Executor          interface{}   `json:"executor"`
+	FullDisplayName   string        `json:"fullDisplayName"`
+	Id                int64         `json:"id,string"`
+	KeepLog           bool          `json:"keepLog"`
+	Number            int64         `json:"number"`
+	QueueId           int64         `json:"queueId"`
+	Result            string        `json:"result"`
+	Timestamp         int64         `json:"timestamp"`
+	Url               string        `json:"url"`
+	ChangeSets        []interface{} `json:"changeSets"`
+	Culprits          []interface{} `json:"culprits"`
+	NextBuild         PreviousBuild `json:"nextBuild"`
+	PreviousBuild     PreviousBuild `json:"previousBuild"`
+}
+
+type PreviousBuild struct {
+	Number int64  `json:"number"`
+	Url    string `json:"url"`
+}
