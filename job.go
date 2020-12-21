@@ -146,3 +146,20 @@ func (j *Jenkins) GetJobResuilt(JobName string, BuildNumber int64) (*JobResuilt,
 	}
 	return &jobresuilt, nil
 }
+
+func (j *Jenkins) GetJobConsole(JobName string, BuildNumber int64) (string, error) {
+	path := fmt.Sprintf("job/%s/%d/logText/progressiveText?start=0", JobName, BuildNumber)
+	resp, err := j.Do(path, nil)
+	if err != nil {
+		return "", err
+	}
+	if resp.StatusCode != 200 {
+		return "", errors.New(resp.Status)
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+	return string(body), nil
+}
