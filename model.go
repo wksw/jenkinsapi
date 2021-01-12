@@ -129,3 +129,8 @@ type PreviousBuild struct {
 	Number int64  `json:"number"`
 	Url    string `json:"url"`
 }
+
+type JobWithParamaters struct {
+	JenkinsModel
+	Jobs []*JenkinsJob `json:"jobs"`
+}
