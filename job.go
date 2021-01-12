@@ -163,3 +163,32 @@ func (j *Jenkins) GetJobConsole(JobName string, BuildNumber int64) (string, erro
 	defer resp.Body.Close()
 	return string(body), nil
 }
+
+// get job detail whith Paramaters
+// 定制化输出任务详情接口
+// http://jenkins.contoso.com//api/json?tree=jobs[name,description,disabled]&pretty=true
+func (j *Jenkins) GetJobWithParamaters(ViewName string, JobNeed string) (*JobWithParamaters, error) {
+	// 组装需要参数的url
+	var needParamaters string
+	var url string
+	needParamaters = fmt.Sprintf("tree=jobs%s&pretty=true", JobNeed)
+	if ViewName == "" {
+		url = fmt.Sprintf("api/json?%s", needParamaters)
+	} else {
+		url = fmt.Sprintf("/view/%s/api/json?%s", ViewName, needParamaters)
+	}
+	resp, err := j.Do(url, nil)
+	if err != nil {
+		return nil, err
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	var jobAll JobWithParamaters
+	if err := json.Unmarshal(body, &jobAll); err != nil {
+		return nil, err
+	}
+	return &jobAll, nil
+}
